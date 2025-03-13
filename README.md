@@ -26,8 +26,8 @@ The script supports downscaling images, repeating the prompt processing, and eve
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/your-repo.git
-   cd your-repo
+   git clone https://github.com/michal-hradis/image-descriptions.git
+   cd image-descriptions
    ```
 
 2. **Create a Virtual Environment (Optional but recommended):**
