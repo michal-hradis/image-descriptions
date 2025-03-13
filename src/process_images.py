@@ -3,6 +3,7 @@ import argparse
 import cv2
 import json
 import os
+import base64
 
 from ollama import Client
 from openai import OpenAI
@@ -137,8 +138,8 @@ class OpenAIProcessor(VLLMProcessor):
                     "text": prompt
                 },
                 {
-                    "type": "image",
-                    "image": {"url": f"data:image/jpeg;base64,{base64_encoded_image}"}
+                    "type": "image_url",
+                    "image_url": {"url": f"data:image/jpeg;base64,{base64_encoded_image}"}
                 }
                 ]
         })
@@ -150,7 +151,7 @@ class OpenAIProcessor(VLLMProcessor):
         )
 
         # Return the content from the first message choice.
-        return response["choices"][0]["message"]["content"]
+        return response.choices[0].message.content
 
 
 def process_image(processor, encoded_image, prompts, model, repeat, translate_cz):
@@ -237,7 +238,8 @@ def main():
         if encoded_image is None:
             continue
 
-        results = process_image(processor, encoded_image, prompts, args.model, args.repeat, args.translate_cz)
+        base64_encoded_image = base64.b64encode(encoded_image).decode('utf-8')
+        results = process_image(processor, base64_encoded_image, prompts, args.model, args.repeat, args.translate_cz)
         output_results(results, args.output_path, image_path)
         print("-" * 40)
 
